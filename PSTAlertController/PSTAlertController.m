@@ -353,6 +353,8 @@ static NSUInteger PSTVisibleAlertsCount = 0;
         alertController.viewDidDisappearBlock = ^{
             typeof (self) strongSelf = weakSelf;
             [strongSelf performBlocks:PROPERTY(didDismissBlocks) withAction:strongSelf.executedAlertAction];
+            // to avoid holding self too long time
+            objc_setAssociatedObject(controller, _cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         };
 
         [controller presentViewController:alertController animated:animated completion:^{
